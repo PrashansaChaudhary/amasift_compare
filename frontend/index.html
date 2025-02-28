@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmaSift Compare - Amazon Product Comparison Tool</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <h1><span class="logo-amasift">AmaSift</span> Compare</h1>
+            <p class="tagline">Sift through products, compare with confidence</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" id="nav-home" class="active">Home</a></li>
+                <li><a href="#" id="nav-compare">Compare</a></li>
+                <li><a href="#" id="nav-deals">Top Deals</a></li>
+                <li><a href="#" id="nav-about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Section -->
+        <section id="home-section" class="section-active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h2>Compare Amazon Products at a Glance</h2>
+                    <p>Make informed decisions with our powerful comparison tool</p>
+                    <button id="start-comparing-btn" class="btn-primary">Start Comparing</button>
+                </div>
+                <div class="hero-image">
+                    <img src="images/comparison-illustration.svg" alt="Product comparison illustration">
+                </div>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fas fa-balance-scale feature-icon"></i>
+                    <h3>Side-by-Side Comparison</h3>
+                    <p>Compare products based on price, ratings, reviews, and more</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-comment-dots feature-icon"></i>
+                    <h3>Review Analysis</h3>
+                    <p>Get insights from customer reviews with our sentiment analysis</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-tags feature-icon"></i>
+                    <h3>Best Deals</h3>
+                    <p>Find products with the highest discount percentages</p>
+                </div>
+            </div>
+
+            <div class="categories">
+                <h2>Browse by Category</h2>
+                <div class="category-grid" id="category-grid">
+                    <!-- Categories will be loaded dynamically -->
+                    <div class="loading">Loading categories...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Compare Section -->
+        <section id="compare-section" class="hidden">
+            <h2>Product Comparison</h2>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="category-filter">Category:</label>
+                    <select id="category-filter">
+                        <option value="">All Categories</option>
+                        <!-- Categories will be loaded dynamically -->
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="price-min">Price Range:</label>
+                    <div class="price-range">
+                        <input type="number" id="price-min" placeholder="Min" min="0">
+                        <span>to</span>
+                        <input type="number" id="price-max" placeholder="Max" min="0">
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label for="rating-min">Minimum Rating:</label>
+                    <select id="rating-min">
+                        <option value="">Any Rating</option>
+                        <option value="4">4★ & Up</option>
+                        <option value="3">3★ & Up</option>
+                        <option value="2">2★ & Up</option>
+                        <option value="1">1★ & Up</option>
+                    </select>
+                </div>
+                <button id="apply-filters-btn" class="btn-secondary">Apply Filters</button>
+            </div>
+
+            <div class="product-selection">
+                <div class="product-grid" id="product-grid">
+                    <!-- Products will be loaded dynamically -->
+                    <div class="loading">Select filters and click Apply to see products</div>
+                </div>
+            </div>
+
+            <div class="selected-products" id="selected-products">
+                <h3>Selected Products <span id="selected-count">(0)</span></h3>
+                <p class="selection-hint">Select at least 2 products to compare</p>
+                <div class="selected-items" id="selected-items">
+                    <!-- Selected products will appear here -->
+                </div>
+                <button id="compare-btn" class="btn-primary" disabled>Compare Products</button>
+            </div>
+
+            <div class="comparison-result" id="comparison-result">
+                <!-- Comparison results will be shown here -->
+            </div>
+        </section>
+
+        <!-- Deals Section -->
+        <section id="deals-section" class="hidden">
+            <h2>Top Deals on Amazon</h2>
+            <div class="deals-grid" id="deals-grid">
+                <!-- Top deals will be loaded dynamically -->
+                <div class="loading">Loading top deals...</div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about-section" class="hidden">
+            <h2>About AmaSift Compare</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Our Mission</h3>
+                    <p>AmaSift Compare aims to simplify the decision-making process for Amazon shoppers by providing a powerful tool for side-by-side product comparisons. We believe that informed consumers make better purchasing decisions.</p>
+                    
+                    <h3>How It Works</h3>
+                    <p>Our tool uses data from Amazon's product listings and customer reviews to provide comprehensive comparisons across various factors such as category, price, rating, and sentiment analysis.</p>
+                    
+                    <h3>Data Source</h3>
+                    <p>We utilize a comprehensive dataset from Kaggle titled "Amazon Sales Data," which includes detailed records of product listings and customer reviews across various categories on Amazon.</p>
+                    
+                    <h3>Future Plans</h3>
+                    <p>We're constantly working to improve AmaSift Compare. Future enhancements include machine learning models to predict user preferences, user personalization features, expansion to other e-commerce platforms, and mobile compatibility.</p>
+                </div>
+                <div class="about-image">
+                    <img src="images/about-illustration.svg" alt="About A2Z AmazeComparator">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h2><span class="logo-amasift">AmaSift</span> Compare</h2>
+                <p>© 2025 AmaSift Compare. All rights reserved.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#" class="nav-link" data-target="home-section">Home</a></li>
+                    <li><a href="#" class="nav-link" data-target="compare-section">Compare</a></li>
+                    <li><a href="#" class="nav-link" data-target="deals-section">Top Deals</a></li>
+                    <li><a href="#" class="nav-link" data-target="about-section">About</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-envelope"></i> contact@amasiftcompare.com</p>
+                <p><i class="fas fa-code"></i> View on <a href="#" target="_blank">GitHub</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Templates for dynamic content -->
+    <template id="category-template">
+        <div class="category-card">
+            <div class="category-icon">
+                <i class="fas fa-shopping-bag"></i>
+            </div>
+            <h3 class="category-name"></h3>
+        </div>
+    </template>
+
+    <template id="product-card-template">
+        <div class="product-card">
+            <div class="product-image">
+                <img src="" alt="Product Image">
+            </div>
+            <div class="product-info">
+                <h3 class="product-title"></h3>
+                <div class="product-rating">
+                    <span class="rating-stars"></span>
+                    <span class="rating-count"></span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price"></span>
+                    <span class="original-price"></span>
+                    <span class="discount-badge"></span>
+                </div>
+            </div>
+            <button class="add-to-compare-btn">Add to Compare</button>
+        </div>
+    </template>
+
+    <template id="selected-product-template">
+        <div class="selected-product">
+            <img src="" alt="Product">
+            <div class="selected-product-info">
+                <h4 class="selected-product-title"></h4>
+                <p class="selected-product-price"></p>
+            </div>
+            <button class="remove-selected-btn"><i class="fas fa-times"></i></button>
+        </div>
+    </template>
+
+    <template id="comparison-table-template">
