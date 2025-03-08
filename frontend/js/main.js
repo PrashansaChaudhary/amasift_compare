@@ -6,8 +6,8 @@
  */
 
 // Constants
-const API_BASE_URL = window.location.hostname === 'localhost' ? 
-                    'http://localhost:5000/api' : '/api';
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 
+                    `http://${window.location.hostname}:8080/api` : '/api';
 
 // DOM Elements
 document.addEventListener('DOMContentLoaded', () => {
@@ -46,6 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
      * Initialize the application
      */
     function init() {
+        console.log("Initializing AmaSift Compare application...");
+        console.log("API Base URL:", API_BASE_URL);
+        
         // Set up event listeners
         setupNavigation();
         setupEventListeners();
@@ -74,12 +77,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 navLinks.forEach(navLink => navLink.classList.remove('active'));
                 
                 // Show target section and activate link
-                document.getElementById(targetId).classList.remove('hidden');
-                link.classList.add('active');
-                
-                // Additional actions based on section
-                if (targetId === 'deals-section') {
-                    loadTopDeals();
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.classList.remove('hidden');
+                    link.classList.add('active');
+                    
+                    // Additional actions based on section
+                    if (targetId === 'deals-section') {
+                        loadTopDeals();
+                    }
+                } else {
+                    console.error("Target section not found:", targetId);
                 }
             });
         });
@@ -90,58 +98,97 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function setupEventListeners() {
         // Start comparing button redirects to compare section
-        startComparingBtn.addEventListener('click', () => {
-            document.getElementById('nav-compare').click();
-        });
+        if (startComparingBtn) {
+            startComparingBtn.addEventListener('click', () => {
+                const navCompare = document.getElementById('nav-compare');
+                if (navCompare) {
+                    navCompare.click();
+                }
+            });
+        }
         
         // Apply filters button
-        applyFiltersBtn.addEventListener('click', () => {
-            loadProducts();
-        });
+        if (applyFiltersBtn) {
+            applyFiltersBtn.addEventListener('click', () => {
+                loadProducts();
+            });
+        }
         
         // Compare button
-        compareBtn.addEventListener('click', () => {
-            compareProducts();
-        });
+        if (compareBtn) {
+            compareBtn.addEventListener('click', () => {
+                compareProducts();
+            });
+        }
     }
     
     /**
      * Load categories from API
      */
     function loadCategories() {
+        if (!categoryGrid) {
+            console.error("Category grid element not found");
+            return;
+        }
+        
         categoryGrid.innerHTML = '<div class="loading">Loading categories...</div>';
         
+        console.log("Fetching categories from:", `${API_BASE_URL}/categories`);
+        
         fetch(`${API_BASE_URL}/categories`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log("Categories received:", data);
                 categoryGrid.innerHTML = '';
                 
                 // Also populate category filter dropdown
-                categoryFilter.innerHTML = '<option value="">All Categories</option>';
+                if (categoryFilter) {
+                    categoryFilter.innerHTML = '<option value="">All Categories</option>';
+                }
                 
-                data.forEach(category => {
-                    // Add to category grid
-                    const categoryName = category.category;
-                    const categoryCard = categoryTemplate.content.cloneNode(true);
-                    
-                    categoryCard.querySelector('.category-name').textContent = categoryName;
-                    
-                    // Add click event to filter by this category
-                    const cardElement = categoryCard.querySelector('.category-card');
-                    cardElement.addEventListener('click', () => {
-                        document.getElementById('nav-compare').click();
-                        categoryFilter.value = categoryName;
-                        loadProducts();
+                if (data && data.length > 0) {
+                    data.forEach(category => {
+                        // Add to category grid
+                        const categoryName = category.category;
+                        
+                        if (categoryTemplate) {
+                            const categoryCard = categoryTemplate.content.cloneNode(true);
+                            
+                            categoryCard.querySelector('.category-name').textContent = categoryName;
+                            
+                            // Add click event to filter by this category
+                            const cardElement = categoryCard.querySelector('.category-card');
+                            cardElement.addEventListener('click', () => {
+                                const navCompare = document.getElementById('nav-compare');
+                                if (navCompare) {
+                                    navCompare.click();
+                                    
+                                    if (categoryFilter) {
+                                        categoryFilter.value = categoryName;
+                                        loadProducts();
+                                    }
+                                }
+                            });
+                            
+                            categoryGrid.appendChild(categoryCard);
+                        }
+                        
+                        // Add to dropdown
+                        if (categoryFilter) {
+                            const option = document.createElement('option');
+                            option.value = categoryName;
+                            option.textContent = categoryName;
+                            categoryFilter.appendChild(option);
+                        }
                     });
-                    
-                    categoryGrid.appendChild(categoryCard);
-                    
-                    // Add to dropdown
-                    const option = document.createElement('option');
-                    option.value = categoryName;
-                    option.textContent = categoryName;
-                    categoryFilter.appendChild(option);
-                });
+                } else {
+                    categoryGrid.innerHTML = '<div class="no-results">No categories found</div>';
+                }
             })
             .catch(error => {
                 console.error('Error loading categories:', error);
@@ -153,33 +200,46 @@ document.addEventListener('DOMContentLoaded', () => {
      * Load products based on filters
      */
     function loadProducts() {
+        if (!productGrid) {
+            console.error("Product grid element not found");
+            return;
+        }
+        
         productGrid.innerHTML = '<div class="loading">Loading products...</div>';
         
         // Build query parameters
         const params = new URLSearchParams();
         
-        if (categoryFilter.value) {
+        if (categoryFilter && categoryFilter.value) {
             params.append('category', categoryFilter.value);
         }
         
-        if (priceMin.value) {
+        if (priceMin && priceMin.value) {
             params.append('min_price', priceMin.value);
         }
         
-        if (priceMax.value) {
+        if (priceMax && priceMax.value) {
             params.append('max_price', priceMax.value);
         }
         
-        if (ratingMin.value) {
+        if (ratingMin && ratingMin.value) {
             params.append('min_rating', ratingMin.value);
         }
         
+        console.log("Fetching products with params:", params.toString());
+        
         fetch(`${API_BASE_URL}/products?${params.toString()}`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log("Products received:", data);
                 productGrid.innerHTML = '';
                 
-                if (data.length === 0) {
+                if (!data || data.length === 0) {
                     productGrid.innerHTML = '<div class="no-results">No products found matching your filters.</div>';
                     return;
                 }
@@ -198,56 +258,78 @@ document.addEventListener('DOMContentLoaded', () => {
      * Render a product card
      */
     function renderProductCard(product) {
+        if (!productCardTemplate || !productGrid) {
+            console.error("Product card template or product grid not found");
+            return;
+        }
+        
         const card = productCardTemplate.content.cloneNode(true);
         
         // Set product image
         const imgElement = card.querySelector('.product-image img');
-        imgElement.src = product.image_url || 'images/product-placeholder.png';
-        imgElement.alt = product.title;
+        if (imgElement) {
+            imgElement.src = product.image_url || 'images/product-placeholder.png';
+            imgElement.alt = product.title;
+        }
         
         // Set product title
-        card.querySelector('.product-title').textContent = product.title;
+        const titleElement = card.querySelector('.product-title');
+        if (titleElement) {
+            titleElement.textContent = product.title;
+        }
         
         // Set rating stars
         const ratingStars = card.querySelector('.rating-stars');
-        const rating = parseFloat(product.rating) || 0;
-        ratingStars.innerHTML = getStarRating(rating);
+        if (ratingStars) {
+            const rating = parseFloat(product.rating) || 0;
+            ratingStars.innerHTML = getStarRating(rating);
+        }
         
         // Set rating count
-        card.querySelector('.rating-count').textContent = 
-            `(${product.rating_count ? product.rating_count.toLocaleString() : 0})`;
+        const ratingCount = card.querySelector('.rating-count');
+        if (ratingCount) {
+            ratingCount.textContent = `(${product.rating_count ? product.rating_count.toLocaleString() : 0})`;
+        }
         
         // Set prices
         const currentPrice = card.querySelector('.current-price');
         const originalPrice = card.querySelector('.original-price');
         const discountBadge = card.querySelector('.discount-badge');
         
-        currentPrice.textContent = formatPrice(product.price);
+        if (currentPrice) {
+            currentPrice.textContent = formatPrice(product.price);
+        }
         
-        if (product.original_price && product.original_price > product.price) {
-            originalPrice.textContent = formatPrice(product.original_price);
-            
-            // Calculate discount percentage
-            const discountPercent = Math.round((1 - (product.price / product.original_price)) * 100);
-            discountBadge.textContent = `-${discountPercent}%`;
-        } else {
-            originalPrice.style.display = 'none';
-            discountBadge.style.display = 'none';
+        if (originalPrice && discountBadge) {
+            if (product.original_price && product.original_price > product.price) {
+                originalPrice.textContent = formatPrice(product.original_price);
+                
+                // Calculate discount percentage
+                const discountPercent = Math.round((1 - (product.price / product.original_price)) * 100);
+                discountBadge.textContent = `-${discountPercent}%`;
+            } else {
+                originalPrice.style.display = 'none';
+                discountBadge.style.display = 'none';
+            }
         }
         
         // Add to compare button
         const addButton = card.querySelector('.add-to-compare-btn');
-        
-        // Check if product is already selected
-        const isSelected = selectedProducts.some(p => p.product_id === product.product_id);
-        if (isSelected) {
-            addButton.classList.add('selected');
-            addButton.textContent = 'Remove from Comparison';
+        if (addButton) {
+            // Set product id as data attribute
+            addButton.setAttribute('data-product-id', product.product_id);
+            
+            // Check if product is already selected
+            const isSelected = selectedProducts.some(p => p.product_id === product.product_id);
+            if (isSelected) {
+                addButton.classList.add('selected');
+                addButton.textContent = 'Remove from Comparison';
+            }
+            
+            addButton.addEventListener('click', () => {
+                toggleProductSelection(product, addButton);
+            });
         }
-        
-        addButton.addEventListener('click', () => {
-            toggleProductSelection(product, addButton);
-        });
         
         productGrid.appendChild(card);
     }
@@ -265,9 +347,11 @@ document.addEventListener('DOMContentLoaded', () => {
             button.textContent = 'Add to Compare';
             
             // Remove from selected items display
-            const selectedItem = document.querySelector(`[data-product-id="${product.product_id}"]`);
-            if (selectedItem) {
-                selectedItem.remove();
+            if (selectedItems) {
+                const selectedItem = selectedItems.querySelector(`[data-product-id="${product.product_id}"]`);
+                if (selectedItem) {
+                    selectedItem.remove();
+                }
             }
         } else {
             // Add to selected products (max 4)
@@ -292,56 +376,78 @@ document.addEventListener('DOMContentLoaded', () => {
      * Render a selected product in the sidebar
      */
     function renderSelectedProduct(product) {
+        if (!selectedProductTemplate || !selectedItems) {
+            console.error("Selected product template or selected items container not found");
+            return;
+        }
+        
         const selectedItem = selectedProductTemplate.content.cloneNode(true);
         const container = selectedItem.querySelector('.selected-product');
         
-        // Set product data attribute for removal
-        container.setAttribute('data-product-id', product.product_id);
-        
-        // Set image
-        const imgElement = selectedItem.querySelector('img');
-        imgElement.src = product.image_url || 'images/product-placeholder.png';
-        imgElement.alt = product.title;
-        
-        // Set title and price
-        selectedItem.querySelector('.selected-product-title').textContent = product.title;
-        selectedItem.querySelector('.selected-product-price').textContent = formatPrice(product.price);
-        
-        // Set up remove button
-        const removeButton = selectedItem.querySelector('.remove-selected-btn');
-        removeButton.addEventListener('click', () => {
-            // Remove from selected products
-            selectedProducts = selectedProducts.filter(p => p.product_id !== product.product_id);
+        if (container) {
+            // Set product data attribute for removal
+            container.setAttribute('data-product-id', product.product_id);
             
-            // Remove the item from the display
-            container.remove();
-            
-            // Update button in product grid if visible
-            const gridButton = document.querySelector(`.product-card button[data-product-id="${product.product_id}"]`);
-            if (gridButton) {
-                gridButton.classList.remove('selected');
-                gridButton.textContent = 'Add to Compare';
+            // Set image
+            const imgElement = selectedItem.querySelector('img');
+            if (imgElement) {
+                imgElement.src = product.image_url || 'images/product-placeholder.png';
+                imgElement.alt = product.title;
             }
             
-            // Update count and compare button
-            updateSelectionStatus();
-        });
-        
-        selectedItems.appendChild(selectedItem);
+            // Set title and price
+            const titleElement = selectedItem.querySelector('.selected-product-title');
+            if (titleElement) {
+                titleElement.textContent = product.title;
+            }
+            
+            const priceElement = selectedItem.querySelector('.selected-product-price');
+            if (priceElement) {
+                priceElement.textContent = formatPrice(product.price);
+            }
+            
+            // Set up remove button
+            const removeButton = selectedItem.querySelector('.remove-selected-btn');
+            if (removeButton) {
+                removeButton.addEventListener('click', () => {
+                    // Remove from selected products
+                    selectedProducts = selectedProducts.filter(p => p.product_id !== product.product_id);
+                    
+                    // Remove the item from the display
+                    container.remove();
+                    
+                    // Update button in product grid if visible
+                    const gridButton = document.querySelector(`.add-to-compare-btn[data-product-id="${product.product_id}"]`);
+                    if (gridButton) {
+                        gridButton.classList.remove('selected');
+                        gridButton.textContent = 'Add to Compare';
+                    }
+                    
+                    // Update count and compare button
+                    updateSelectionStatus();
+                });
+            }
+            
+            selectedItems.appendChild(selectedItem);
+        }
     }
     
     /**
      * Update the selection status (count and button state)
      */
     function updateSelectionStatus() {
-        const count = selectedProducts.length;
-        selectedCount.textContent = `(${count})`;
+        if (selectedCount) {
+            const count = selectedProducts.length;
+            selectedCount.textContent = `(${count})`;
+        }
         
         // Enable compare button if at least 2 products are selected
-        if (count >= 2) {
-            compareBtn.disabled = false;
-        } else {
-            compareBtn.disabled = true;
+        if (compareBtn) {
+            if (selectedProducts.length >= 2) {
+                compareBtn.disabled = false;
+            } else {
+                compareBtn.disabled = true;
+            }
         }
     }
     
@@ -349,9 +455,16 @@ document.addEventListener('DOMContentLoaded', () => {
      * Compare selected products
      */
     function compareProducts() {
+        if (!comparisonResult) {
+            console.error("Comparison result container not found");
+            return;
+        }
+        
         comparisonResult.innerHTML = '<div class="loading">Comparing products...</div>';
         
         const productIds = selectedProducts.map(product => product.product_id);
+        
+        console.log("Comparing products:", productIds);
         
         fetch(`${API_BASE_URL}/compare`, {
             method: 'POST',
@@ -360,9 +473,19 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             body: JSON.stringify({ product_ids: productIds }),
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
-                renderComparisonTable(data);
+                console.log("Comparison result:", data);
+                if (data.products) {
+                    renderComparisonTable(data.products);
+                } else {
+                    throw new Error("Invalid comparison data received");
+                }
             })
             .catch(error => {
                 console.error('Error comparing products:', error);
@@ -374,6 +497,11 @@ document.addEventListener('DOMContentLoaded', () => {
      * Render the comparison table
      */
     function renderComparisonTable(products) {
+        if (!comparisonResult) {
+            console.error("Comparison result container not found");
+            return;
+        }
+        
         // Create table structure
         const table = document.createElement('table');
         table.className = 'comparison-table';
@@ -497,11 +625,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (compareMode === 'min') {
                 // Lower is better (e.g., price)
                 const minValue = Math.min(...values.filter(v => v > 0));
-                winnerIndex = values.findIndex(v => v === minValue);
+                winnerIndex = values.findIndex(v => v === minValue && v > 0);
             } else if (compareMode === 'max') {
                 // Higher is better (e.g., rating)
                 const maxValue = Math.max(...values);
-                winnerIndex = values.findIndex(v => v === maxValue);
+                winnerIndex = values.findIndex(v => v === maxValue && v > 0);
             }
         }
         
@@ -524,68 +652,104 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function loadTopDeals() {
         const dealsGrid = document.getElementById('deals-grid');
+        if (!dealsGrid) {
+            console.error("Deals grid element not found");
+            return;
+        }
+        
         dealsGrid.innerHTML = '<div class="loading">Loading top deals...</div>';
         
-        fetch(`${API_BASE_URL}/top_discounts?limit=20`)
-            .then(response => response.json())
+        console.log("Fetching top deals");
+        
+        fetch(`${API_BASE_URL}/products/deals`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log("Deals received:", data);
                 dealsGrid.innerHTML = '';
                 
-                if (data.length === 0) {
+                if (!data || data.length === 0) {
                     dealsGrid.innerHTML = '<div class="no-results">No deals found at the moment.</div>';
                     return;
                 }
                 
                 data.forEach(product => {
-                    const card = productCardTemplate.content.cloneNode(true);
-                    
-                    // Set product image
-                    const imgElement = card.querySelector('.product-image img');
-                    imgElement.src = product.image_url || 'images/product-placeholder.png';
-                    imgElement.alt = product.title;
-                    
-                    // Set product title
-                    card.querySelector('.product-title').textContent = product.title;
-                    
-                    // Set rating stars
-                    const ratingStars = card.querySelector('.rating-stars');
-                    const rating = parseFloat(product.rating) || 0;
-                    ratingStars.innerHTML = getStarRating(rating);
-                    
-                    // Set rating count
-                    card.querySelector('.rating-count').textContent = 
-                        `(${product.rating_count ? product.rating_count.toLocaleString() : 0})`;
-                    
-                    // Set prices
-                    const currentPrice = card.querySelector('.current-price');
-                    const originalPrice = card.querySelector('.original-price');
-                    const discountBadge = card.querySelector('.discount-badge');
-                    
-                    currentPrice.textContent = formatPrice(product.price);
-                    
-                    if (product.original_price && product.original_price > product.price) {
-                        originalPrice.textContent = formatPrice(product.original_price);
+                    if (productCardTemplate) {
+                        const card = productCardTemplate.content.cloneNode(true);
                         
-                        // Calculate discount percentage
-                        const discountPercent = Math.round((1 - (product.price / product.original_price)) * 100);
-                        discountBadge.textContent = `-${discountPercent}%`;
-                    } else {
-                        originalPrice.style.display = 'none';
-                        discountBadge.style.display = 'none';
+                        // Set product image
+                        const imgElement = card.querySelector('.product-image img');
+                        if (imgElement) {
+                            imgElement.src = product.image_url || 'images/product-placeholder.png';
+                            imgElement.alt = product.title;
+                        }
+                        
+                        // Set product title
+                        const titleElement = card.querySelector('.product-title');
+                        if (titleElement) {
+                            titleElement.textContent = product.title;
+                        }
+                        
+                        // Set rating stars
+                        const ratingStars = card.querySelector('.rating-stars');
+                        if (ratingStars) {
+                            const rating = parseFloat(product.rating) || 0;
+                            ratingStars.innerHTML = getStarRating(rating);
+                        }
+                        
+                        // Set rating count
+                        const ratingCount = card.querySelector('.rating-count');
+                        if (ratingCount) {
+                            ratingCount.textContent = `(${product.rating_count ? product.rating_count.toLocaleString() : 0})`;
+                        }
+                        
+                        // Set prices
+                        const currentPrice = card.querySelector('.current-price');
+                        const originalPrice = card.querySelector('.original-price');
+                        const discountBadge = card.querySelector('.discount-badge');
+                        
+                        if (currentPrice) {
+                            currentPrice.textContent = formatPrice(product.price);
+                        }
+                        
+                        if (originalPrice && discountBadge) {
+                            if (product.original_price && product.original_price > product.price) {
+                                originalPrice.textContent = formatPrice(product.original_price);
+                                
+                                // Calculate discount percentage
+                                const discountPercent = Math.round((1 - (product.price / product.original_price)) * 100);
+                                discountBadge.textContent = `-${discountPercent}%`;
+                            } else {
+                                originalPrice.style.display = 'none';
+                                discountBadge.style.display = 'none';
+                            }
+                        }
+                        
+                        // Change button to "View Details"
+                        const addButton = card.querySelector('.add-to-compare-btn');
+                        if (addButton) {
+                            addButton.textContent = 'View Details';
+                            addButton.addEventListener('click', () => {
+                                // Redirect to compare section and find this product
+                                const navCompare = document.getElementById('nav-compare');
+                                if (navCompare) {
+                                    navCompare.click();
+                                    
+                                    if (categoryFilter) {
+                                        categoryFilter.value = product.category || '';
+                                    }
+                                    
+                                    loadProducts();
+                                }
+                            });
+                        }
+                        
+                        dealsGrid.appendChild(card);
                     }
-                    
-                    // Change button to "View Details"
-                    const addButton = card.querySelector('.add-to-compare-btn');
-                    addButton.textContent = 'View Details';
-                    addButton.addEventListener('click', () => {
-                        // Redirect to compare section and find this product
-                        document.getElementById('nav-compare').click();
-                        categoryFilter.value = product.category || '';
-                        loadProducts();
-                        // TODO: Scroll to this product or highlight it
-                    });
-                    
-                    dealsGrid.appendChild(card);
                 });
             })
             .catch(error => {
@@ -611,7 +775,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Check for category parameter
         const category = urlParams.get('category');
-        if (category) {
+        if (category && categoryFilter) {
             categoryFilter.value = category;
             if (section === 'compare') {
                 loadProducts();
