@@ -74,3 +74,70 @@
 2025-03-08 14:00:40,967 - werkzeug - INFO - 127.0.0.1 - - [08/Mar/2025 14:00:40] "[35m[1mGET /images/product-placeholder.png HTTP/1.1[0m" 500 -
 2025-03-08 14:00:49,147 - werkzeug - INFO - 127.0.0.1 - - [08/Mar/2025 14:00:49] "GET /api/products?category=Electronics+Features&min_price=1&max_price=129 HTTP/1.1" 200 -
 2025-03-08 14:00:49,166 - werkzeug - INFO - 127.0.0.1 - - [08/Mar/2025 14:00:49] "[35m[1mGET /images/product-placeholder.png HTTP/1.1[0m" 500 -
+2025-03-20 00:15:32,287 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://10.0.0.42:8080
+2025-03-20 00:15:32,287 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-20 00:15:44,859 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:15:44] "[36mGET / HTTP/1.1[0m" 304 -
+2025-03-20 00:15:44,961 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:15:44] "[36mGET /css/style.css HTTP/1.1[0m" 304 -
+2025-03-20 00:15:44,962 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:15:44] "[36mGET /js/main.js HTTP/1.1[0m" 304 -
+2025-03-20 00:15:44,983 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:15:44] "[35m[1mGET /images/comparison-illustration.svg HTTP/1.1[0m" 500 -
+2025-03-20 00:15:44,985 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:15:44] "[35m[1mGET /images/about-illustration.svg HTTP/1.1[0m" 500 -
+2025-03-20 00:15:45,003 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:15:45] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-20 00:15:45,126 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:15:45] "GET /api/categories HTTP/1.1" 200 -
+2025-03-20 00:15:49,288 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:15:49] "GET /api/products?category=Alarms+%26+Sensors HTTP/1.1" 200 -
+2025-03-20 00:16:11,256 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:16:11] "GET /api/products?category=Accessories HTTP/1.1" 200 -
+2025-03-20 00:28:56,301 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:28:56] "[36mGET / HTTP/1.1[0m" 304 -
+2025-03-20 00:28:56,313 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:28:56] "[36mGET /css/style.css HTTP/1.1[0m" 304 -
+2025-03-20 00:28:56,315 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:28:56] "GET /js/main.js HTTP/1.1" 200 -
+2025-03-20 00:28:56,320 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:28:56] "[35m[1mGET /images/about-illustration.svg HTTP/1.1[0m" 500 -
+2025-03-20 00:28:56,322 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:28:56] "[35m[1mGET /images/comparison-illustration.svg HTTP/1.1[0m" 500 -
+2025-03-20 00:28:56,667 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:28:56] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-20 00:29:00,518 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:29:00] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-20 00:29:32,442 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:29:32] "[36mGET / HTTP/1.1[0m" 304 -
+2025-03-20 00:29:32,464 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:29:32] "[36mGET /css/style.css HTTP/1.1[0m" 304 -
+2025-03-20 00:29:32,465 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:29:32] "GET /js/main.js HTTP/1.1" 200 -
+2025-03-20 00:29:32,482 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:29:32] "[35m[1mGET /images/comparison-illustration.svg HTTP/1.1[0m" 500 -
+2025-03-20 00:29:32,483 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:29:32] "[35m[1mGET /images/about-illustration.svg HTTP/1.1[0m" 500 -
+2025-03-20 00:29:32,530 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:29:32] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-20 00:29:32,602 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:29:32] "GET /api/categories HTTP/1.1" 200 -
+2025-03-20 00:29:34,341 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:29:34] "GET /api/products/deals HTTP/1.1" 200 -
+2025-03-20 00:29:46,361 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:29:46] "GET /api/products?min_price=20&max_price=40&min_rating=4 HTTP/1.1" 200 -
+2025-03-20 00:29:57,178 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:29:57] "POST /api/compare HTTP/1.1" 200 -
+2025-03-20 00:40:10,964 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:40:10] "[36mGET / HTTP/1.1[0m" 304 -
+2025-03-20 00:40:10,983 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:40:10] "[36mGET /css/style.css HTTP/1.1[0m" 304 -
+2025-03-20 00:40:10,986 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:40:10] "GET /js/main.js HTTP/1.1" 200 -
+2025-03-20 00:40:10,994 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:40:10] "[35m[1mGET /images/about-illustration.svg HTTP/1.1[0m" 500 -
+2025-03-20 00:40:10,996 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:40:10] "[35m[1mGET /images/comparison-illustration.svg HTTP/1.1[0m" 500 -
+2025-03-20 00:40:11,084 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:40:11] "GET /api/categories HTTP/1.1" 200 -
+2025-03-20 00:40:11,418 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:40:11] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-20 00:40:14,506 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:40:14] "GET /api/products/deals HTTP/1.1" 200 -
+2025-03-20 00:42:44,670 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:42:44] "[36mGET / HTTP/1.1[0m" 304 -
+2025-03-20 00:42:44,701 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:42:44] "[36mGET /css/style.css HTTP/1.1[0m" 304 -
+2025-03-20 00:42:44,705 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:42:44] "GET /js/main.js HTTP/1.1" 200 -
+2025-03-20 00:42:44,708 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:42:44] "[35m[1mGET /images/about-illustration.svg HTTP/1.1[0m" 500 -
+2025-03-20 00:42:44,713 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:42:44] "[35m[1mGET /images/comparison-illustration.svg HTTP/1.1[0m" 500 -
+2025-03-20 00:42:44,805 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:42:44] "GET /api/categories HTTP/1.1" 200 -
+2025-03-20 00:42:45,144 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:42:45] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-20 00:42:50,327 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:42:50] "[36mGET / HTTP/1.1[0m" 304 -
+2025-03-20 00:42:50,391 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:42:50] "[36mGET /css/style.css HTTP/1.1[0m" 304 -
+2025-03-20 00:42:50,418 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:42:50] "[36mGET /js/main.js HTTP/1.1[0m" 304 -
+2025-03-20 00:42:50,438 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:42:50] "[35m[1mGET /images/about-illustration.svg HTTP/1.1[0m" 500 -
+2025-03-20 00:42:50,440 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:42:50] "[35m[1mGET /images/comparison-illustration.svg HTTP/1.1[0m" 500 -
+2025-03-20 00:42:50,443 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:42:50] "GET /api/categories HTTP/1.1" 200 -
+2025-03-20 00:42:50,768 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:42:50] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-20 00:45:22,927 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:45:22] "[36mGET / HTTP/1.1[0m" 304 -
+2025-03-20 00:45:22,972 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:45:22] "[36mGET /css/style.css HTTP/1.1[0m" 304 -
+2025-03-20 00:45:22,975 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:45:22] "GET /js/main.js HTTP/1.1" 200 -
+2025-03-20 00:45:22,982 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:45:22] "[35m[1mGET /images/comparison-illustration.svg HTTP/1.1[0m" 500 -
+2025-03-20 00:45:22,983 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:45:22] "[35m[1mGET /images/about-illustration.svg HTTP/1.1[0m" 500 -
+2025-03-20 00:45:23,012 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:45:23] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-20 00:45:23,091 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:45:23] "GET /api/categories HTTP/1.1" 200 -
+2025-03-20 00:45:32,568 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:45:32] "GET /api/products?min_price=60&max_price=100 HTTP/1.1" 200 -
+2025-03-20 00:45:50,945 - werkzeug - INFO - 127.0.0.1 - - [20/Mar/2025 00:45:50] "POST /api/compare HTTP/1.1" 200 -
+2025-03-20 00:47:04,476 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://10.0.0.42:8080
+2025-03-20 00:47:04,476 - werkzeug - INFO - [33mPress CTRL+C to quit[0m

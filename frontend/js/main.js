@@ -268,7 +268,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Set product image
         const imgElement = card.querySelector('.product-image img');
         if (imgElement) {
-            imgElement.src = product.image_url || 'images/product-placeholder.png';
+            imgElement.src = product.image_url || `https://via.placeholder.com/300x300?text=${product.product_id}`;
+            imgElement.onerror = function() {
+                this.src = `https://via.placeholder.com/300x300?text=${product.product_id}`;
+            };
             imgElement.alt = product.title;
         }
         
@@ -389,9 +392,13 @@ document.addEventListener('DOMContentLoaded', () => {
             container.setAttribute('data-product-id', product.product_id);
             
             // Set image
+            // Set image
             const imgElement = selectedItem.querySelector('img');
             if (imgElement) {
-                imgElement.src = product.image_url || 'images/product-placeholder.png';
+                imgElement.src = product.image_url || `https://via.placeholder.com/300x300?text=${product.product_id}`;
+                imgElement.onerror = function() {
+                    this.src = `https://via.placeholder.com/300x300?text=${product.product_id}`;
+                };
                 imgElement.alt = product.title;
             }
             
@@ -684,7 +691,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Set product image
                         const imgElement = card.querySelector('.product-image img');
                         if (imgElement) {
-                            imgElement.src = product.image_url || 'images/product-placeholder.png';
+                            imgElement.src = product.image_url || `https://via.placeholder.com/300x300?text=${product.product_id}`;
+                            imgElement.onerror = function() {
+                                this.src = `https://via.placeholder.com/300x300?text=${product.product_id}`;
+                            };
                             imgElement.alt = product.title;
                         }
                         
