@@ -141,3 +141,17 @@
  * Running on http://127.0.0.1:8080
  * Running on http://10.0.0.42:8080
 2025-03-20 00:47:04,476 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-21 01:47:45,655 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://10.0.0.42:8080
+2025-03-21 01:47:45,656 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-21 01:47:56,271 - werkzeug - INFO - 127.0.0.1 - - [21/Mar/2025 01:47:56] "GET / HTTP/1.1" 200 -
+2025-03-21 01:47:56,311 - werkzeug - INFO - 127.0.0.1 - - [21/Mar/2025 01:47:56] "GET /css/style.css HTTP/1.1" 200 -
+2025-03-21 01:47:56,312 - werkzeug - INFO - 127.0.0.1 - - [21/Mar/2025 01:47:56] "GET /js/main.js HTTP/1.1" 200 -
+2025-03-21 01:47:56,351 - werkzeug - INFO - 127.0.0.1 - - [21/Mar/2025 01:47:56] "[35m[1mGET /images/comparison-illustration.svg HTTP/1.1[0m" 500 -
+2025-03-21 01:47:56,355 - werkzeug - INFO - 127.0.0.1 - - [21/Mar/2025 01:47:56] "[35m[1mGET /images/about-illustration.svg HTTP/1.1[0m" 500 -
+2025-03-21 01:47:56,657 - werkzeug - INFO - 127.0.0.1 - - [21/Mar/2025 01:47:56] "GET /api/categories HTTP/1.1" 200 -
+2025-03-21 01:47:56,868 - werkzeug - INFO - 127.0.0.1 - - [21/Mar/2025 01:47:56] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-21 01:48:06,322 - werkzeug - INFO - 127.0.0.1 - - [21/Mar/2025 01:48:06] "GET /api/products?min_price=80&max_price=1000 HTTP/1.1" 200 -
+2025-03-21 01:48:28,752 - werkzeug - INFO - 127.0.0.1 - - [21/Mar/2025 01:48:28] "POST /api/compare HTTP/1.1" 200 -
